@@ -26,7 +26,7 @@ v_rpool_name=
 v_rpool_tweaks=
 declare -a v_selected_disks
 v_swap_size=0                 # integer
-v_free_tail_space=0           # integer
+v_free_tail_space=10           # integer
 v_hostname=
 v_kernel_variant=
 v_zfs_arc_max_mb=
