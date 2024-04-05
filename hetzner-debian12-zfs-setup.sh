@@ -25,25 +25,25 @@ v_bpool_tweaks=
 v_rpool_name=
 v_rpool_tweaks=
 declare -a v_selected_disks
-v_swap_size=                 # integer
-v_free_tail_space=           # integer
+v_swap_size=0                 # integer
+v_free_tail_space=0           # integer
 v_hostname=
 v_kernel_variant=
 v_zfs_arc_max_mb=
 v_root_password=
-v_encrypt_rpool=             # 0=false, 1=true
+v_encrypt_rpool=0             # 0=false, 1=true
 v_passphrase=
 v_zfs_experimental=
 v_suitable_disks=()
 
 # Constants
-c_deb_packages_repo=https://deb.debian.org/debian
-c_deb_security_repo=https://deb.debian.org/debian-security
+c_deb_packages_repo=https://mirror.hetzner.com/debian/packages
+c_deb_security_repo=https://mirror.hetzner.com/debian/security
 
-c_default_zfs_arc_max_mb=250
+c_default_zfs_arc_max_mb=51200
 c_default_bpool_tweaks="-o ashift=12 -O compression=lz4"
 c_default_rpool_tweaks="-o ashift=12 -O acltype=posixacl -O compression=zstd-9 -O dnodesize=auto -O relatime=on -O xattr=sa -O normalization=formD"
-c_default_hostname=terem
+c_default_hostname=epistaxis
 c_zfs_mount_dir=/mnt
 c_log_dir=$(dirname "$(mktemp)")/zfs-hetzner-vm
 c_install_log=$c_log_dir/install.log
@@ -455,7 +455,7 @@ function unmount_and_export_fs {
 #################### MAIN ################################
 export LC_ALL=en_US.UTF-8
 export NCURSES_NO_UTF8_ACS=1
-
+mdadm --stop --scan || true
 check_prerequisites
 
 activate_debug
@@ -545,11 +545,6 @@ echo "======= create zfs pools and datasets =========="
   done
 
   pools_mirror_option=
-  if [[ ${#v_selected_disks[@]} -gt 1 ]]; then
-    if dialog --defaultno --yesno "Do you want to use mirror mode for ${v_selected_disks[*]}?" 30 100; then 
-      pools_mirror_option=mirror
-    fi
-  fi
 
 # shellcheck disable=SC2086
 zpool create \
