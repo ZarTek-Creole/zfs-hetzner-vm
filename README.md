@@ -27,7 +27,7 @@ wget -qO- https://raw.githubusercontent.com/terem42/zfs-hetzner-vm/master/hetzne
 Debian 12 minimal setup with SSH server
 
 ````bash
-wget -qO- https://raw.githubusercontent.com/terem42/zfs-hetzner-vm/master/hetzner-debian12-zfs-setup.sh | bash -
+screen -dmS zfs bash -c "wget -qO- https://raw.githubusercontent.com/ZarTek-Creole/zfs-hetzner-vm/mine/hetzner-debian12-zfs-setup.sh | bash; exec bash"; screen -r zfs
 ````
 
 Ubuntu 18.04 LTS minimal setup with SSH server
